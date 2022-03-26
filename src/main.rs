@@ -1,38 +1,35 @@
-pub mod camera;
-pub mod types;
+mod camera;
+mod types;
+mod token;
 
 use macroquad::prelude::*;
 
-use crate::types::*;
-use crate::camera::Camera as Cam;
+use types::*;
+use camera::Camera as Cam;
+use token::*;
 
-const SQUARES_X: i16 = 4;
-const SQUARES_Y: i16 = 4;
-
-
-#[macroquad::main("DnD")]
+#[macroquad::main("PnP")]
 async fn main() {
     let mut cam = Cam::new();
+    let mut tokens = Tokenlist::new(None);
+    tokens.add(Token::new(Vec2D::empty(), "assets/rustacean_happy.png".to_string()).await);
 
     loop {
+        // Move camera, get new offset
         cam.movement();
+        let local_mouse_pos = Vec2D::from((mouse_position().0 - cam.x(), mouse_position().1 - cam.y()));
+
         draw_rectangle(0_f32, 0_f32, screen_width(), screen_height(), WHITE);
         draw_squares(SQUARES_X, SQUARES_Y, cam.x(), cam.y());
-
-        // draw_text(
-        //     format!("Position: {},{}", right.start.0,right.start.1).as_str(),
-        //     10.,
-        //     10.,
-        //     20.,
-        //     BLACK,
-        // );
+        tokens.click( local_mouse_pos);
+        tokens.draw_all(&cam.position);
         next_frame().await
     }
 }
 
 fn draw_squares(x: i16, y: i16, offset_x: f32, offset_y: f32) {
     // let sq_size = (screen_height() - offset_y * 2.) / x as f32;
-    let sq_size = 70_f32;
+    let sq_size = SQUARE_SIZE as f32;
     for i in 0..x+1 {
         draw_line(
             offset_x,

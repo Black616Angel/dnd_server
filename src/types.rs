@@ -1,15 +1,14 @@
+use std::{ops::{Add, AddAssign, Sub, SubAssign, Div, Rem, Mul}, cmp::Ordering};
 
-pub const SQUARE_SIZE: i32 = 70;
-pub const SQUARES_X: i16 = 4;
-pub const SQUARES_Y: i16 = 4;
-
+use macroquad::prelude::Vec2;
+use macroquad::math::vec2;
 
 pub struct MB {
     pub was_up: bool,
     pub start: Vec2D,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct Vec2D {
     pub x: f32,
     pub y: f32,
@@ -18,12 +17,11 @@ impl Vec2D {
     pub fn empty() -> Self {
         Self{x:0_f32, y:0_f32}
     }
-    pub fn square(size: f32) -> Self {
-        Self{x:size, y:size}
+    
+    pub fn into_vec2(&self) -> Vec2 {
+        vec2(self.x.clone(), self.y.clone())
     }
 }
-
-use std::{ops::{Add, AddAssign, Sub, SubAssign, Div, Rem}, cmp::Ordering};
 impl Add for Vec2D {
     type Output = Vec2D;
     fn add(self, rhs: Vec2D) -> Self::Output  {
@@ -71,6 +69,14 @@ impl Sub<(f32,f32)> for Vec2D {
     }
 }
 
+impl Sub<f32> for Vec2D {
+    type Output = Vec2D;
+
+    fn sub(self, rhs: f32) -> Self::Output {
+        Vec2D{ x: self.x - rhs, y: self.y - rhs }
+    }
+}
+
 impl SubAssign for Vec2D {
 
     fn sub_assign(&mut self, rhs: Self) {
@@ -92,6 +98,22 @@ impl Div<f32> for Vec2D {
 
     fn div(self, rhs: f32) -> Self::Output {
         Vec2D{ x: self.x / rhs, y: self.y / rhs }
+    }
+}
+
+impl Mul for Vec2D {
+    type Output = Vec2D;
+
+    fn mul(self, rhs: Self) -> Self::Output {
+        Vec2D{ x: self.x * rhs.x, y: self.y * rhs.y }
+    }
+}
+
+impl Mul<f32> for Vec2D {
+    type Output = Vec2D;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Vec2D{ x: self.x * rhs, y: self.y * rhs }
     }
 }
 

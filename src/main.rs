@@ -10,6 +10,9 @@ use crate::scene::*;
 
 #[macroquad::main("PnP")]
 async fn main() {
+
+    info!("Started");
+
     let mut scene = Scene::new_from_file("assets/Test_Scene.json".to_string()).await.unwrap();
     loop {
         // Move camera, get new offset

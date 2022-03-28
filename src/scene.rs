@@ -3,7 +3,6 @@ use crate::token::*;
 use crate::camera::Camera as Cam;
 use crate::scene_json::*;
 
-use std::fs;
 use std::error::Error;
 use macroquad::prelude::*;
 
@@ -18,7 +17,8 @@ pub struct Scene {
 
 impl Scene {
     pub async fn new_from_file(filename: String) -> Result<Self, Box<dyn Error>> {
-        let contents = fs::read_to_string(filename)?;
+        let contents = load_string(&filename).await?;
+        info!("contents read");
         return Self::new_from_string(contents).await
     }
 
@@ -36,6 +36,7 @@ impl Scene {
         for token in json.tokens {
             tokens.add(Token::new_from_json(token, square_size).await, square_size)
         }
+        info!("Scene built");
         Self{name, height, width, cam: Cam::new(), tokens, square_size}
     }
 

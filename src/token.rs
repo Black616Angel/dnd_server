@@ -1,4 +1,4 @@
-use crate::{types::*, scene_json::SceneJsonToken};
+use crate::{types::*, scene_json::{SceneJsonToken, ClickAction}};
 
 use macroquad::prelude::*;
 
@@ -8,7 +8,7 @@ pub enum ClickMode {
     NONE,
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct Token {
     pub position: Vec2D,
     pub size: Vec2D,
@@ -16,16 +16,22 @@ pub struct Token {
     click_counter: i32,
     pos_grid: Vec2D,
     dragged: bool,
+    click_action: ClickAction,
 }
 
 impl Token {
 
-    pub async fn new_from_json(json: SceneJsonToken, square_size: f32) -> Self {
+    pub async fn new_from_json(folder: String, json: SceneJsonToken, square_size: f32) -> Self {
         let pos_grid = Vec2D::from((json.position_x as f32, json.position_y as f32)) - 1_f32;
         let position = pos_grid * square_size; // - (square_size / 2) as f32;
-        let texture = load_texture(&json.texture_path).await.unwrap();
+        info!("");
+        let texture = load_texture(&(folder + "/" + &json.texture_path)).await.unwrap();
         let size: Vec2D = Vec2D::from(((json.width) as f32, (json.height) as f32));
-        Token{ position: position.clone(), size, texture, click_counter: 0, pos_grid, dragged: false }
+        if let Some(click_action) = json.click_action {
+            Token{ position: position.clone(), size, texture, click_counter: 0, pos_grid, dragged: false, click_action }
+        } else {
+            Token{ position: position.clone(), size, texture, click_counter: 0, pos_grid, dragged: false, click_action: ClickAction::ShowStats("".to_string()) }
+        }
     }
     
     pub fn in_token(&self, position: Vec2D, square_size: f32) -> bool {
@@ -90,7 +96,9 @@ impl Token {
         draw_line(origin.x, end.y, end.x, end.y, 2_f32, Color::from_rgba(0, 0, 0, 255));
     }
 
-    pub fn click(&mut self) {
+    pub fn click(&mut self) -> ClickAction {
+        info!("click");
+        return self.click_action.clone()
     }
 
     pub fn clicked(&mut self, clicked: bool) -> ClickMode {
@@ -136,7 +144,7 @@ impl Tokenlist {
         self.list.push(token);
     }
 
-    pub fn click(&mut self, position: Vec2D, square_size: f32) {
+    pub fn click(&mut self, position: Vec2D, square_size: f32) -> Option<ClickAction> {
         // println!("x: {}, y: {}", position.0 - mouse_position().0, position.1 - mouse_position().1);
 
         if is_mouse_button_down(MouseButton::Left){
@@ -169,7 +177,7 @@ impl Tokenlist {
             if let Some(index) = self.active_token_idx {
                 let token = self.list.get_mut(index as usize).unwrap();
                 match token.clicked(false){
-                    ClickMode::CLICKED => token.click(),
+                    ClickMode::CLICKED => return Some(token.click()),
                     _ => {},
                 }
                 token.final_move(square_size);
@@ -177,6 +185,7 @@ impl Tokenlist {
             }
             self.active_token_idx = None;
         }
+        None
     }
 
     pub fn draw_all(&self, offset: &Vec2D, square_size: f32) {

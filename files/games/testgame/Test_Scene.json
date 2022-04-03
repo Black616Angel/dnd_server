@@ -7,7 +7,7 @@
         {
             "name": "Rustacean",
             "description": "Test Rustacean",
-            "texture_path": "assets/box.png",
+            "texture_path": "box.png",
             "stats": [
                 {
                     "name": "String",
@@ -17,12 +17,16 @@
             "height": 2,
             "width": 2,
             "position_x": 1,
-            "position_y": 3
+            "position_y": 3,
+            "click_action": {
+                "type": "ShowStats",
+                "action": ""
+            }
         },
         {
             "name": "Rustacean",
             "description": "Test Rustacean",
-            "texture_path": "assets/rustacean_happy.png",
+            "texture_path": "rustacean_happy.png",
             "stats": [
                 {
                     "name": "String",
@@ -37,7 +41,7 @@
         {
             "name": "Rustacean",
             "description": "Test Rustacean",
-            "texture_path": "assets/rustacean_happy.png",
+            "texture_path": "rustacean_happy.png",
             "stats": [
                 {
                     "name": "String",

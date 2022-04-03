@@ -14,6 +14,9 @@ pub struct Vec2D {
     pub y: f32,
 }
 impl Vec2D {
+    pub fn new(x: f32, y: f32) -> Self {
+        Self{x,y}
+    }
     pub fn empty() -> Self {
         Self{x:0_f32, y:0_f32}
     }

@@ -1,5 +1,5 @@
 [package]
-name = "pnp_server"
+name = "pnp_client"
 version = "0.1.0"
 edition = "2021"
 

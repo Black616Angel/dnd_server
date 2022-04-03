@@ -8,9 +8,6 @@ mod game_picker;
 
 use macroquad::prelude::*;
 use scene_json::ClickAction;
-use scene_json::SceneJson;
-use scene_json::SceneJsonToken;
-use std::error::Error;
 
 use crate::scene::*;
 use crate::ui::*;
@@ -18,16 +15,15 @@ use crate::types::*;
 use crate::game_picker::*;
 
 #[macroquad::main("PnP")]
-async fn main() {
+async fn main(){
 
+    // Gamepicker as root of it all
     let gp = GamePicker::new("files".to_string());
-    let mut ui = UIList::new();
-    // ui.add_button(Button::new("text".to_string(), Vec2D::new(10_f32, 20_f32),
-    // Vec2D::new(200_f32, 100_f32), Color { r: 200_f32, g: 200_f32, b: 200_f32, a: 255_f32 }, ||{println!("klappt");}));
-
-    info!("Started");
-    // let mut scene = Scene::new_from_file("files/games/testgame/Test_Scene.json".to_string(), None).await.unwrap();
     let mut scene = gp.get_scene().await.unwrap();
+    info!("Started");
+
+    let mut ui = UIList::new();
+
     let mut next_scene: Option<String> = None;
     loop {
         if let Some(action) =  scene.click() {
@@ -44,10 +40,6 @@ async fn main() {
 
         scene.draw();
         ui.draw();
-        // macroquad::ui::root_ui().label(None, "hello megaui");
-        // if macroquad::ui::root_ui().button(None, "Push me") {
-        //     println!("pushed");
-        // }
         next_frame().await;
         if let Some(next_scene_name) = next_scene {
             next_scene = None;

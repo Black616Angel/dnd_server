@@ -7,15 +7,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'pnp_server'",
+            "name": "Debug executable 'pnp_client'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=pnp_server",
-                    "--package=pnp_server"
+                    "--bin=pnp_client",
+                    "--package=pnp_client"
                 ],
                 "filter": {
-                    "name": "pnp_server",
+                    "name": "pnp_client",
                     "kind": "bin"
                 }
             },
@@ -25,16 +25,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'pnp_server'",
+            "name": "Debug unit tests in executable 'pnp_client'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=pnp_server",
-                    "--package=pnp_server"
+                    "--bin=pnp_client",
+                    "--package=pnp_client"
                 ],
                 "filter": {
-                    "name": "pnp_server",
+                    "name": "pnp_client",
                     "kind": "bin"
                 }
             },

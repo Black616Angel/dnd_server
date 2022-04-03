@@ -7,15 +7,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'dnd_server'",
+            "name": "Debug executable 'pnp_server'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=dnd_server",
-                    "--package=dnd_server"
+                    "--bin=pnp_server",
+                    "--package=pnp_server"
                 ],
                 "filter": {
-                    "name": "dnd_server",
+                    "name": "pnp_server",
                     "kind": "bin"
                 }
             },
@@ -25,16 +25,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'dnd_server'",
+            "name": "Debug unit tests in executable 'pnp_server'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=dnd_server",
-                    "--package=dnd_server"
+                    "--bin=pnp_server",
+                    "--package=pnp_server"
                 ],
                 "filter": {
-                    "name": "dnd_server",
+                    "name": "pnp_server",
                     "kind": "bin"
                 }
             },

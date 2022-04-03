@@ -1,5 +1,5 @@
 [package]
-name = "dnd_server"
+name = "pnp_server"
 version = "0.1.0"
 edition = "2021"
 

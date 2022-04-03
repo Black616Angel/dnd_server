@@ -115,15 +115,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dnd_server"
-version = "0.1.0"
-dependencies = [
- "macroquad",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "fontdue"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -310,6 +301,15 @@ dependencies = [
  "crc32fast",
  "deflate",
  "miniz_oxide",
+]
+
+[[package]]
+name = "pnp_server"
+version = "0.1.0"
+dependencies = [
+ "macroquad",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

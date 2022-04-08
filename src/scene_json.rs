@@ -1,7 +1,10 @@
 use serde_json::Value;
 use serde::{Serialize, Deserialize};
+use std::hash::Hash;
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+use crate::diff_json::*;
+
+#[derive(Serialize, Deserialize, Clone, Debug, Hash)]
 pub struct SceneJson {
     /// scene name: only important for overview
     pub name: String,
@@ -19,7 +22,7 @@ pub struct SceneJson {
     pub texture_background: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Hash)]
 pub struct SceneJsonToken {
     /// token name
     pub name: String,
@@ -49,8 +52,7 @@ pub struct SceneJsonStat {
     pub value: Value,
 }
 
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Hash)]
 #[serde(tag = "type", content = "action")]
 pub enum ClickAction {
     /// scene changes after click on token
@@ -60,6 +62,31 @@ pub enum ClickAction {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct LastSceneJson {
+pub struct DefaultSceneJson {
     pub name: String,
+    pub diffs: Vec<DiffJson>,
+}
+
+impl SceneJsonStat {
+    fn hash_value<H: std::hash::Hasher>(&self, state: &mut H, value: &Value) {
+        match value {
+            Value::Array(arr) => {
+                for el in arr {
+                    self.hash_value(state, el)
+                }
+            },
+            Value::Null => "".hash(state),
+            Value::Bool(value) => value.hash(state),
+            Value::Number(value) => value.hash(state),
+            Value::String(value) => value.hash(state),
+            Value::Object(_) => "".hash(state),
+        }
+    }
+}
+
+impl Hash for SceneJsonStat {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
+        self.hash_value(state, &self.value)
+    }
 }

@@ -1,10 +1,10 @@
-mod camera;
-mod types;
-mod token;
-mod scene;
-mod scene_json;
-mod ui;
-mod game_picker;
+pub mod camera;
+pub mod types;
+pub mod token;
+pub mod scene;
+pub mod scene_json;
+pub mod ui;
+pub mod game_picker;
 
 use macroquad::prelude::*;
 use scene_json::ClickAction;

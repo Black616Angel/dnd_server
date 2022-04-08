@@ -60,7 +60,7 @@ impl GamePicker {
 
     async fn get_last_scene_name(&self, game: &str) -> Result<String, Box<dyn Error>> {
         let contents = load_string(&(self.root_folder.clone() + "/games/" + game + "/DefaultScene.json")).await?;
-        let json: LastSceneJson = serde_json::from_str(&contents)?;
+        let json: DefaultSceneJson = serde_json::from_str(&contents)?;
         return Ok(json.name);
     }
 
